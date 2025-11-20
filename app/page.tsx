@@ -1,10 +1,11 @@
 'use client';
 
+import React, { useEffect } from 'react';
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport } from 'ai';
-import { useEffect } from 'react';
-import MessageList from './components/MessageList';
-import ChatInput from './components/ChatInput';
+import LayoutSplit from './components/LayoutSplit';
+import ChatPanel from './components/ChatPanel';
+import SidePanel from './components/SidePanel';
 
 export default function Page() {
   // useChat handles the streaming state
@@ -46,17 +47,21 @@ export default function Page() {
     }
   };
 
-  return (
-    <div className="flex flex-col w-full h-screen max-w-2xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4 text-center text-white">Business Validator AI</h1>
-      
-      <MessageList messages={messages} isLoading={isLoading} />
+  const handleClear = () => {
+    setMessages([]);
+    localStorage.removeItem('chat_history');
+  };
 
-      <ChatInput 
+  return (
+    <LayoutSplit>
+      <ChatPanel 
+        messages={messages} 
         isLoading={isLoading} 
         onSend={handleSend} 
-        onStop={stop} 
+        onStop={stop}
+        onClear={handleClear}
       />
-    </div>
+      <SidePanel />
+    </LayoutSplit>
   );
 }
