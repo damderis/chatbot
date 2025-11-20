@@ -15,6 +15,7 @@ export default function ChatInput({ isLoading, onSend, onStop }: ChatInputProps)
   const handleSend = () => {
     if (!input.trim()) return;
     onSend(input);
+    setInput('');
   };
 
   return (
